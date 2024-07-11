@@ -1,19 +1,29 @@
 import React from "react";
-
-const Message = () => {
+import { useAuthContext } from "../../context/AuthContext";
+import useConversation from "../../store/useConversation";
+import { extractTime } from "../../utils/extractTime";
+const Message = ({ message }) => {
+  const { authUser } = useAuthContext();
+  const { selectedConversation } = useConversation();
+  const fromMe = message.senderId === authUser._id;
+  const formattedTime = extractTime(message.createdAt);
+  const chatClassName = fromMe ? "chat-end" : "chat-start";
+  const profilePic = fromMe
+    ? authUser.profilePic
+    : selectedConversation.profilePic;
+  const bubbleBgColor = fromMe ? "bg-blue-500" : "";
   return (
-    <div className="chat chat-end">
+    <div className={`chat ${chatClassName}`}>
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
-          <img
-            src="https://images.squarespace-cdn.com/content/v1/6058f3b0dbb27b03bbd36be9/1616442358690-OQOD2XFTAP3I4PYM9QLR/Screen+Shot+2021-02-23+at+9.35.43+PM.png"
-            alt="Taiwind CSS chat bubble component"
-          />
+          <img src={profilePic} alt="Taiwind CSS chat bubble component" />
         </div>
       </div>
-      <div className="chat-bubble text-white bg-blue-500">Hi! What is upp?</div>
-      <div className="chat-footer opacity-50 text-xs flex gap-1 items-center">
-        12:42
+      <div className={`chat-bubble text-white ${bubbleBgColor} pb-2`}>
+        {message.message}
+      </div>
+      <div className="chat-footer opacity-50 text-black text-xs flex gap-1 items-center">
+        {formattedTime}
       </div>
     </div>
   );
