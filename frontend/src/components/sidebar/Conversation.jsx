@@ -6,6 +6,8 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
 
   const isSelected = selectedConversation?._id === conversation._id;
 
+  const isOnline = false;
+
   return (
     <>
       <div
@@ -14,7 +16,7 @@ const Conversation = ({ conversation, lastIdx, emoji }) => {
         }`}
         onClick={() => setSelectedConversation(conversation)}
       >
-        <div className="avatar online">
+        <div className={`avatar ${isOnline}`}>
           <div className="w-12 rounded-full">
             <img src={conversation.profilePic} alt="user avatar" />
           </div>
